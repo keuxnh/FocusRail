@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 기본 배경색 지정 (앱 분위기에 맞춤) */
+body {
+  background-color: #09090b;
+  margin: 0;
+  padding: 0;
+}
