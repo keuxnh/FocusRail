@@ -628,8 +628,8 @@ const App = () => {
         />
       </div>
       
-      {/* Top Panel */}
-      <div className="relative z-50 p-4 md:p-5 flex justify-between items-start pointer-events-none">
+      {/* Top Panel - z-index increased to 100 */}
+      <div className="relative z-[100] p-4 md:p-5 flex justify-between items-start pointer-events-none">
         <div className="bg-black/40 backdrop-blur-xl p-4 rounded-xl border border-white/5 shadow-2xl pointer-events-auto max-w-[200px] md:max-w-xs transition-all">
           <h1 className="text-lg font-black text-white flex items-center gap-2 mb-0.5">
             <Train className="w-4 h-4 text-white opacity-80" /> Focus Rail
@@ -638,15 +638,15 @@ const App = () => {
             {!departure ? "출발역 선택" : !arrival ? "도착역 선택" : "준비 완료"}
           </p>
           {(departure || arrival) && (
-             <button onClick={resetSelection} className="mt-2.5 flex items-center gap-1 text-[9px] font-bold text-zinc-400 hover:text-white transition-colors uppercase tracking-wider">
+             <button onClick={(e) => { e.stopPropagation(); resetSelection(); }} className="mt-2.5 flex items-center gap-1 text-[9px] font-bold text-zinc-400 hover:text-white transition-colors uppercase tracking-wider cursor-pointer">
                <RotateCcw className="w-2.5 h-2.5" /> 재설정
              </button>
           )}
         </div>
       </div>
 
-      {/* Bottom Panel (Responsive) */}
-      <div className="mt-auto relative z-50 p-4 md:p-5 flex justify-center pointer-events-none">
+      {/* Bottom Panel - z-index increased to 100 */}
+      <div className="mt-auto relative z-[100] p-4 md:p-5 flex justify-center pointer-events-none">
         <div className="w-full max-w-xl bg-black/40 backdrop-blur-xl border border-white/5 rounded-2xl p-4 md:p-6 shadow-2xl pointer-events-auto overflow-hidden">
            {!departure || !arrival ? (
              <div className="flex items-center gap-4 text-zinc-400 py-1">
@@ -677,8 +677,8 @@ const App = () => {
                     <p className="text-xl font-mono font-black text-white">{journeyDurationMinutes}m</p>
                  </div>
                  <button 
-                   onClick={() => { setAppState('seat'); soundEngine.playClick(); }}
-                   className="px-5 py-2.5 bg-white/10 hover:bg-white text-zinc-300 hover:text-black rounded-lg font-bold text-xs shadow-xl transition-all active:scale-95 border border-white/5"
+                   onClick={(e) => { e.stopPropagation(); setAppState('seat'); soundEngine.playClick(); }}
+                   className="px-5 py-2.5 bg-white/10 hover:bg-white text-zinc-300 hover:text-black rounded-lg font-bold text-xs shadow-xl transition-all active:scale-95 border border-white/5 cursor-pointer"
                  >
                    좌석 선택
                  </button>
@@ -696,11 +696,11 @@ const App = () => {
         <MapView center={mapCenter} zoom={zoom} stations={stations} departure={departure} arrival={arrival} showRoute={true} />
       </div>
       
-      {/* Responsive Seat Card */}
-      <div className="relative z-50 w-full max-w-2xl bg-black/50 backdrop-blur-2xl rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row h-full max-h-[600px] md:h-[480px] border border-white/5 animate-fade-in-up">
+      {/* Responsive Seat Card - z-index increased to 100 */}
+      <div className="relative z-[100] w-full max-w-2xl bg-black/50 backdrop-blur-2xl rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row h-full max-h-[600px] md:h-[480px] border border-white/5 animate-fade-in-up">
         {/* Left Panel */}
         <div className="w-full md:w-1/3 bg-white/5 p-6 md:p-8 border-b md:border-b-0 md:border-r border-white/5 flex flex-col shrink-0">
-          <button onClick={() => { setAppState('booking'); soundEngine.playClick(); }} className="p-2 bg-white/5 border border-white/5 rounded-lg mb-4 md:mb-6 hover:bg-white/10 self-start text-white transition-all">
+          <button onClick={(e) => { e.stopPropagation(); setAppState('booking'); soundEngine.playClick(); }} className="p-2 bg-white/5 border border-white/5 rounded-lg mb-4 md:mb-6 hover:bg-white/10 self-start text-white transition-all cursor-pointer">
             <ArrowRight className="w-4 h-4 rotate-180" />
           </button>
           <h2 className="text-xl font-black text-white mb-1.5 uppercase tracking-tight">Seat Class</h2>
@@ -721,8 +721,8 @@ const App = () => {
             {seats.map((seat) => (
               <button
                 key={seat.id}
-                onClick={() => { setSelectedSeat(seat); soundEngine.playClick(); }}
-                className={`p-4 rounded-xl border transition-all relative group h-24 md:h-28 flex flex-col justify-between ${
+                onClick={(e) => { e.stopPropagation(); setSelectedSeat(seat); soundEngine.playClick(); }}
+                className={`p-4 rounded-xl border transition-all relative group h-24 md:h-28 flex flex-col justify-between cursor-pointer ${
                   selectedSeat?.id === seat.id
                   ? 'bg-zinc-800 border-zinc-600 ring-1 ring-white/10'
                   : 'bg-white/5 border-white/5 hover:border-white/10 text-zinc-400'
@@ -742,9 +742,9 @@ const App = () => {
             ))}
           </div>
           <button 
-            onClick={() => { setAppState('ticket'); soundEngine.playClick(); }}
+            onClick={(e) => { e.stopPropagation(); setAppState('ticket'); soundEngine.playClick(); }}
             disabled={!selectedSeat}
-            className={`mt-auto w-full py-3.5 rounded-xl font-bold text-xs transition-all shadow-xl flex items-center justify-center gap-2 ${
+            className={`mt-auto w-full py-3.5 rounded-xl font-bold text-xs transition-all shadow-xl flex items-center justify-center gap-2 cursor-pointer ${
               selectedSeat ? 'bg-white text-black hover:bg-zinc-200' : 'bg-white/5 text-zinc-600 cursor-not-allowed border border-white/5'
             }`}
           >
@@ -757,7 +757,7 @@ const App = () => {
 
   const TicketScreen = () => (
     <div className="w-full h-full bg-[#09090b] flex items-center justify-center p-6 relative">
-      <div className="relative z-50 w-full max-w-[340px] bg-black/60 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl overflow-hidden animate-fade-in-up">
+      <div className="relative z-[100] w-full max-w-[340px] bg-black/60 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl overflow-hidden animate-fade-in-up">
         <div className="bg-white/5 p-6 text-white relative">
           <div className="flex justify-between items-start mb-6">
             <div>
@@ -792,8 +792,8 @@ const App = () => {
              <InfoItem label="Platform" value="7" />
            </div>
            <button 
-             onClick={startJourney}
-             className="w-full py-3 bg-white hover:bg-zinc-200 text-black font-bold text-xs rounded-xl shadow-xl transition-all active:scale-95 flex items-center justify-center gap-2"
+             onClick={(e) => { e.stopPropagation(); startJourney(); }}
+             className="w-full py-3 bg-white hover:bg-zinc-200 text-black font-bold text-xs rounded-xl shadow-xl transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
            >
              여정 시작 <ArrowRight className="w-4 h-4" />
            </button>
@@ -815,26 +815,26 @@ const App = () => {
          />
       </div>
       
-      {/* Pause Overlay */}
+      {/* Pause Overlay - z-index increased to 110 */}
       {isPaused && (
-        <div className="absolute inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center animate-fade-in p-6">
+        <div className="absolute inset-0 z-[110] bg-black/80 backdrop-blur-md flex items-center justify-center animate-fade-in p-6">
            <div className="text-center w-full max-w-xs">
              <Pause className="w-12 h-12 text-zinc-500 mx-auto mb-4 opacity-50" />
              <h2 className="text-2xl font-black text-white tracking-widest uppercase mb-8">Paused</h2>
              
-             <button onClick={togglePause} className="w-full py-4 bg-white text-black font-bold rounded-xl hover:scale-105 transition-transform text-xs tracking-widest mb-3">
+             <button onClick={(e) => { e.stopPropagation(); togglePause(); }} className="w-full py-4 bg-white text-black font-bold rounded-xl hover:scale-105 transition-transform text-xs tracking-widest mb-3 cursor-pointer">
                RESUME
              </button>
              
-             <button onClick={resetApp} className="w-full py-4 bg-zinc-800 text-zinc-400 font-bold rounded-xl hover:bg-zinc-700 hover:text-white transition-all text-xs tracking-widest flex items-center justify-center gap-2">
+             <button onClick={(e) => { e.stopPropagation(); resetApp(); }} className="w-full py-4 bg-zinc-800 text-zinc-400 font-bold rounded-xl hover:bg-zinc-700 hover:text-white transition-all text-xs tracking-widest flex items-center justify-center gap-2 cursor-pointer">
                 <LogOut className="w-3 h-3" /> QUIT JOURNEY
              </button>
            </div>
         </div>
       )}
 
-      {/* Top Bar */}
-      <div className="absolute top-0 left-0 right-0 p-4 md:p-6 flex justify-between items-start z-40 pointer-events-none">
+      {/* Top Bar - z-index increased to 100 */}
+      <div className="absolute top-0 left-0 right-0 p-4 md:p-6 flex justify-between items-start z-[100] pointer-events-none">
          <div className="bg-black/40 backdrop-blur-xl px-4 py-2 rounded-full border border-white/5 flex items-center gap-3 md:gap-4 shadow-2xl pointer-events-auto max-w-[70%]">
             <div className="flex items-center gap-2 shrink-0">
                <div className={`w-1.5 h-1.5 bg-white rounded-full ${!isPaused && 'animate-ping'}`}></div>
@@ -843,13 +843,13 @@ const App = () => {
             <div className="h-3 w-px bg-zinc-700 hidden md:block"></div>
             <span className="text-white text-xs font-bold truncate">{departure?.name} → {arrival?.name}</span>
          </div>
-         <button onClick={togglePause} className="bg-black/40 hover:bg-black/60 text-white p-3 md:p-4 rounded-full backdrop-blur-xl border border-white/5 transition-all active:scale-95 pointer-events-auto shadow-2xl group">
+         <button onClick={(e) => { e.stopPropagation(); togglePause(); }} className="bg-black/40 hover:bg-black/60 text-white p-3 md:p-4 rounded-full backdrop-blur-xl border border-white/5 transition-all active:scale-95 pointer-events-auto shadow-2xl group cursor-pointer">
            {isPaused ? <Play className="w-5 h-5 fill-current group-hover:scale-110 transition-transform" /> : <Pause className="w-5 h-5 fill-current group-hover:scale-110 transition-transform" />}
          </button>
       </div>
 
-      {/* Bottom Bar */}
-      <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 flex flex-col items-center gap-4 z-40 pointer-events-none">
+      {/* Bottom Bar - z-index increased to 100 */}
+      <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 flex flex-col items-center gap-4 z-[100] pointer-events-none">
          <div className="w-full max-w-lg bg-black/50 backdrop-blur-xl border border-white/5 rounded-3xl p-4 md:p-6 shadow-2xl relative overflow-hidden pointer-events-auto transition-opacity duration-300">
             <div className="absolute top-0 left-0 h-[2px] bg-zinc-800 w-full">
                <div className="h-full bg-white transition-all ease-linear shadow-[0_0_10px_rgba(255,255,255,0.5)]" style={{width: `${((journeyDurationMinutes * 60 - timeLeft) / (journeyDurationMinutes * 60)) * 100}%`}}></div>
@@ -883,8 +883,8 @@ const App = () => {
                 ].map(mode => (
                   <button
                     key={mode.id}
-                    onClick={() => { setSoundMode(mode.id); soundEngine.playClick(); }}
-                    className={`p-2.5 rounded-full transition-all duration-300 shrink-0 ${soundMode === mode.id ? 'bg-white text-black shadow-lg scale-105' : 'text-zinc-500 hover:text-white hover:bg-white/5'}`}
+                    onClick={(e) => { e.stopPropagation(); setSoundMode(mode.id); soundEngine.playClick(); }}
+                    className={`p-2.5 rounded-full transition-all duration-300 shrink-0 cursor-pointer ${soundMode === mode.id ? 'bg-white text-black shadow-lg scale-105' : 'text-zinc-500 hover:text-white hover:bg-white/5'}`}
                   >
                     {mode.icon}
                   </button>
@@ -896,7 +896,7 @@ const App = () => {
                 <input
                   type="range" min="0" max="1" step="0.01"
                   value={volume}
-                  onChange={(e) => setVolume(parseFloat(e.target.value))}
+                  onChange={(e) => { e.stopPropagation(); setVolume(parseFloat(e.target.value)); }}
                   className="w-16 md:w-20 h-1 bg-zinc-800 rounded-full appearance-none accent-white cursor-pointer hover:accent-zinc-200"
                 />
              </div>
@@ -910,7 +910,7 @@ const App = () => {
         <div className="absolute inset-0 z-0 opacity-20 pointer-events-none grayscale">
              <MapView center={mapCenter} zoom={zoom} stations={stations} departure={departure} arrival={arrival} trainPosition={arrival} showRoute={true} />
         </div>
-        <div className="relative z-50 bg-black/60 backdrop-blur-2xl p-10 rounded-[2rem] border border-white/5 text-center shadow-2xl animate-fade-in-up max-w-sm w-full">
+        <div className="relative z-[100] bg-black/60 backdrop-blur-2xl p-10 rounded-[2rem] border border-white/5 text-center shadow-2xl animate-fade-in-up max-w-sm w-full">
             <div className="w-20 h-20 bg-gradient-to-tr from-white to-zinc-400 rounded-full flex items-center justify-center mx-auto mb-8 shadow-[0_0_30px_rgba(255,255,255,0.1)]">
                 <Check className="w-10 h-10 text-black" strokeWidth={3} />
             </div>
@@ -918,7 +918,7 @@ const App = () => {
             <p className="text-sm text-zinc-400 mb-10 leading-relaxed">
                {arrival?.name}에 도착했습니다.<br/>성공적인 몰입이 되었기를 바랍니다.
             </p>
-            <button onClick={resetApp} className="w-full py-4 bg-white/5 hover:bg-white hover:text-black text-white border border-white/5 rounded-xl font-bold text-xs transition-all uppercase tracking-widest">
+            <button onClick={(e) => { e.stopPropagation(); resetApp(); }} className="w-full py-4 bg-white/5 hover:bg-white hover:text-black text-white border border-white/5 rounded-xl font-bold text-xs transition-all uppercase tracking-widest cursor-pointer">
                 Return Home
             </button>
         </div>
