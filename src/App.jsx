@@ -5,12 +5,22 @@ import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged }
 import { getFirestore, collection, addDoc, onSnapshot, query, serverTimestamp } from 'firebase/firestore';
 
 /* --- Firebase Setup --- */
-const firebaseConfig = JSON.parse(__firebase_config);
+// 환경 변수나 직접 값을 입력하세요. (보안을 위해 환경 변수 사용 권장)
+const firebaseConfig = {
+  apiKey: "AIzaSyDCcCWk_O4g4iuuElWzThd5oQFZveXLocc",
+  authDomain: "focus-rail-5582d.firebaseapp.com",
+  projectId: "focus-rail-5582d",
+  storageBucket: "focus-rail-5582d.firebasestorage.app",
+  messagingSenderId: "31593096065",
+  appId: "1:31593096065:web:60239b119da71a387afe80",
+  measurementId: "G-8TK91K8Z84"
+};
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-
+// appId는 필요 없다면 제거하거나, 로직에서 사용하는 문자열로 고정하세요.
+const appId = "focus-rail-app";
 /* --- Sound Engine (Web Audio API) --- */
 class SoundEngine {
   constructor() {
